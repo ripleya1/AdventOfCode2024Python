@@ -2,12 +2,22 @@ import re
 
 sum = 0
 
-def isValid(expression):
+def isValidMul(expression):
+    if(re.search("^(d(o((n('(t)?(\((\)?)?)?)?)?)?)?)$", expression) != None):
+        return True
+    return False
+
+def isCompletelyValidDoOrDont(expression):
+    if(re.search("^do(n't)?\(\)$", expression) != None):
+        return True
+    return False
+
+def isValidMul(expression):
     if(re.search("^(m(u(l(\(([0-9]+(,([0-9]+(\)?)?)?)?)?)?)?)?)$", expression) != None):
         return True
     return False
 
-def isCompletelyValid(expression):
+def isCompletelyValidMul(expression):
     if(re.search("(mul)\([0-9]+,[0-9]+\)", expression) != None):
         print(expression)
         return True
@@ -21,12 +31,12 @@ with open("day3input.txt") as f:
     for line in f:
         currExpression = ""
         for char in line:
-            if(len(currExpression) == 0 and char != 'm'):
+            if(len(currExpression) == 0 and (char != 'm' or char != 'd')):
                 continue
             currExpression += char
-            if(not isValid(currExpression)):
+            if(not isValidMul(currExpression)):
                 currExpression = ""
-            elif(isCompletelyValid(currExpression)):
+            elif(isCompletelyValidMul(currExpression)):
                 nums = getNumsFromValidExpression(currExpression)
                 sum += (nums[0] * nums[1])
                 currExpression = ""
